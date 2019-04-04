@@ -17,7 +17,7 @@ app.on('ready', () => {
         height: 900,
         webPreferences: {
             nodeIntegration: false,
-             preload:   path.resolve(__dirname, 'scripts.js')
+            preload:   path.resolve(__dirname, 'scripts.js')
         }
     });
     mainWindow.loadURL('https://web.whatsapp.com');
@@ -42,21 +42,20 @@ app.on('ready', () => {
             console.log('Event is - 3 ' + eventType)
           }
           
-          function sendMessageAll() {
+          async function sendMessageAll() {
             var listOfPeople = document.getElementById('to')
               .value.split(',');
             var arrayLength = listOfPeople.length;
             var msg = document.getElementById('message').value;
             for (var i = 0; i < arrayLength; i++) {
               console.log(listOfPeople[i]);
-              setTimeout(function(){
-                sendmessage(listOfPeople[i] , msg);
-              },1)
+                await sendmessage(listOfPeople[i].trim() , msg);
             }
           }
 
           // Minified version of sendmessage function - https://javascript-minifier.com/
-          function sendmessage(e,t){var n="[title='"+e+"']",o=document.querySelector(n);simulateMouse(o),console.log("Done");for(var l=0;null==document.querySelector("#main  span[title='"+e+"']")&&l<100;)console.log("inside"),l++;var s=setInterval(function(){if(document.getElementsByClassName("_2S1VP copyable-text selectable-text").length>0){clearInterval(s);var e=document.getElementsByClassName("_2S1VP copyable-text selectable-text");console.log("Node 2 "+e[0]),simulateMouse(e[0]),console.log("After click Node 2 "+e[0]),e[0].innerText=t,event=document.createEvent("UIEvents"),event.initUIEvent("input",!0,!0,window,1),e[0].dispatchEvent(event),sendBtn=document.querySelector('span[data-icon="send"]'),simulateMouse(sendBtn)}},300)}
+          //function sendmessage(e,t){var n="[title='"+e+"']",o=document.querySelector(n);simulateMouse(o),console.log("Done");for(var l=0;null==document.querySelector("#main  span[title='"+e+"']")&&l<100;)console.log("inside"),l++;var s=setInterval(function(){if(document.getElementsByClassName("_2S1VP copyable-text selectable-text").length>0){clearInterval(s);var e=document.getElementsByClassName("_2S1VP copyable-text selectable-text");console.log("Node 2 "+e[0]),simulateMouse(e[0]),console.log("After click Node 2 "+e[0]),e[0].innerText=t,event=document.createEvent("UIEvents"),event.initUIEvent("input",!0,!0,window,1),e[0].dispatchEvent(event),sendBtn=document.querySelector('span[data-icon="send"]'),simulateMouse(sendBtn)}},300)}
+          function sendmessage(e,t){return new Promise((n,o)=>{var s="[title='"+e+"']",l=document.querySelector(s);simulateMouse(l),console.log("Done");var a=setInterval(function(){if(document.getElementsByClassName("_2S1VP copyable-text selectable-text").length>0){clearInterval(a);var e=document.getElementsByClassName("_2S1VP copyable-text selectable-text");console.log("Node 2 "+e[0]),simulateMouse(e[0]),console.log("After click Node 2 "+e[0]),e[0].innerText=t,event=document.createEvent("UIEvents"),event.initUIEvent("input",!0,!0,window,1),e[0].dispatchEvent(event),sendBtn=document.querySelector('span[data-icon="send"]'),simulateMouse(sendBtn),n("Done")}},300)})}
           
           function toggleView() {
             if (document.getElementsByClassName("wrapper")[0].style.display == "none") {

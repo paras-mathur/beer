@@ -24,86 +24,88 @@ function sayLoggedIn() {
   showDashboard();
 }
 
-function sendmessage(input, message) {
+// TODO: This code is moved to app.js
+// Remove below code later
+// function sendmessage(input, message) {
 
-  var querySelectorIn = "[title=\'" + input + "\']";
-  var node = document.querySelector(querySelectorIn);
-  simulateMouse(node)
-  console.log('Done')
+//   var querySelectorIn = "[title=\'" + input + "\']";
+//   var node = document.querySelector(querySelectorIn);
+//   simulateMouse(node)
+//   console.log('Done')
 
-  var myInterval = setInterval(function(){
-    if( document.getElementsByClassName('_2S1VP copyable-text selectable-text').length > 0 ) {
-      clearInterval(myInterval);
-      var node2 = document.getElementsByClassName('_2S1VP copyable-text selectable-text');
-      console.log('Node 2 ' + node2[0]);
-      simulateMouse(node2[0])
-      console.log('After click Node 2 ' + node2[0]);
-      //triggerKeyboardEvent(node2[0], 0)
-      node2[0].innerText = message;
-      // Simulate keyboard event
-      event = document.createEvent("UIEvents");
-      event.initUIEvent("input", true, true, window, 1);
-      node2[0].dispatchEvent(event);
+//   var myInterval = setInterval(function(){
+//     if( document.getElementsByClassName('_2S1VP copyable-text selectable-text').length > 0 ) {
+//       clearInterval(myInterval);
+//       var node2 = document.getElementsByClassName('_2S1VP copyable-text selectable-text');
+//       console.log('Node 2 ' + node2[0]);
+//       simulateMouse(node2[0])
+//       console.log('After click Node 2 ' + node2[0]);
+//       //triggerKeyboardEvent(node2[0], 0)
+//       node2[0].innerText = message;
+//       // Simulate keyboard event
+//       event = document.createEvent("UIEvents");
+//       event.initUIEvent("input", true, true, window, 1);
+//       node2[0].dispatchEvent(event);
 
-      sendBtn = document.querySelector("span[data-icon=\"send\"]");
-      simulateMouse(sendBtn)
-    }
-  }, 300);
+//       sendBtn = document.querySelector("span[data-icon=\"send\"]");
+//       simulateMouse(sendBtn)
+//     }
+//   }, 300);
 
-}
-
-
-function simulateMouse(node) {
-  triggerMouseEvent(node, "mouseover");
-  triggerMouseEvent(node, "mousedown");
-  triggerMouseEvent(node, "mouseup");
-  triggerMouseEvent(node, "click");
-}
-
-function triggerMouseEvent(node, eventType) {
-  console.log('Event is - ' + eventType)
-  let clickEvent = document.createEvent('MouseEvents');
-  console.log('Event is - 1 ' + eventType)
-  clickEvent.initEvent(eventType, true, true);
-  console.log('Event is - 2 ' + eventType)
-  node.dispatchEvent(clickEvent);
-  console.log('Event is - 3 ' + eventType)
-}
-
-function triggerKeyboardEvent(el, keyCode) {
-  var keyboardEvent = document.createEvent("KeyboardEvent");
-
-  var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+// }
 
 
-  keyboardEvent[initMethod](
-    "keydown",
-    true, // bubbles oOooOOo0
-    true, // cancelable
-    window, // view
-    false, // ctrlKeyArg
-    false, // altKeyArg
-    false, // shiftKeyArg
-    false, // metaKeyArg
-    keyCode,
-    0 // charCode
-  );
+// function simulateMouse(node) {
+//   triggerMouseEvent(node, "mouseover");
+//   triggerMouseEvent(node, "mousedown");
+//   triggerMouseEvent(node, "mouseup");
+//   triggerMouseEvent(node, "click");
+// }
 
-  el.dispatchEvent(keyboardEvent);
-}
+// function triggerMouseEvent(node, eventType) {
+//   console.log('Event is - ' + eventType)
+//   let clickEvent = document.createEvent('MouseEvents');
+//   console.log('Event is - 1 ' + eventType)
+//   clickEvent.initEvent(eventType, true, true);
+//   console.log('Event is - 2 ' + eventType)
+//   node.dispatchEvent(clickEvent);
+//   console.log('Event is - 3 ' + eventType)
+// }
 
-function sendMessageAll() {
-  var listOfPeople = document.getElementById('to')
-    .value.split(',');
-  var arrayLength = listOfPeople.length;
-  for (var i = 0; i < arrayLength; i++) {
-    console.log(listOfPeople[i]);
-    setTimeout(function(){
-      sendmessage(listOfPeople[i]);
-    },1000)
+// function triggerKeyboardEvent(el, keyCode) {
+//   var keyboardEvent = document.createEvent("KeyboardEvent");
+
+//   var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
+
+
+//   keyboardEvent[initMethod](
+//     "keydown",
+//     true, // bubbles oOooOOo0
+//     true, // cancelable
+//     window, // view
+//     false, // ctrlKeyArg
+//     false, // altKeyArg
+//     false, // shiftKeyArg
+//     false, // metaKeyArg
+//     keyCode,
+//     0 // charCode
+//   );
+
+//   el.dispatchEvent(keyboardEvent);
+// }
+
+// function sendMessageAll() {
+//   var listOfPeople = document.getElementById('to')
+//     .value.split(',');
+//   var arrayLength = listOfPeople.length;
+//   for (var i = 0; i < arrayLength; i++) {
+//     console.log(listOfPeople[i]);
+//     setTimeout(function(){
+//       sendmessage(listOfPeople[i]);
+//     },1000)
     
-  }
-}
+//   }
+// }
 
 function showDashboard() {
 
