@@ -116,18 +116,11 @@ function showDashboard() {
 		.wrapper{padding:10px;background-color:#fff;position: absolute;width: 100%;height: 100%;z-index: 1000;}
 	</style>
 	<script>
-
+		  
 	</script>
 
-	<div class="row" style="z-index: 1001;">
-		<span id="close" class="float-right" style="
-		font-size: x-large;
-		color: black;
-		background-color: white;
-		z-index: 1001;
-		position: absolute;
-		" onclick="toggleView()">X</span>
-	</div>
+	<span id="close" onclick="toggleView(this)" class="switch-area">		
+	</span>
 
 	<div class="wrapper">
 
@@ -143,7 +136,7 @@ function showDashboard() {
 					<input class="form-check-input" type="radio" name="toRadioOptions" id="to-2" value="toGroup">
 					<label class="form-check-label" for="to-2" style="font-weight: 100;">Group</label>
 			</div>
-			<textarea class="form-control copyable-text selectable-text" rows="1" id="to" placeholder="Enter the list of names here ( comma separated )  "></textarea>
+			<span class="copyable-text to selectable-text" rows="1" id="to"></span>
 			
 			<div style="margin-top:10px;"></div>
 			
@@ -157,6 +150,39 @@ function showDashboard() {
 	
 	`
   body[0].insertAdjacentHTML('beforeend', headerCode);
+	var autocomplete = new SelectPure(".to", {
+        options: [
+          {
+            label: "Barbina",
+            value: "ba",
+          },
+          {
+            label: "Busiate",
+            value: "bus",
+          },
+          {
+            label: "Capellini",
+            value: "cp",
+          },
+          {
+            label: "Fedelini",
+            value: "fe",
+          },
+          {
+            label: "Maccheroni",
+            value: "ma",
+          },
+          {
+            label: "Spaghetti",
+            value: "sp",
+          },
+        ],
+        value: ["sp"],
+        multiple: true,
+        autocomplete: true,
+				icon: "fa fa-times",
+        onChange: value => { console.log(value); },
+      });
   // document.getElementById('send').addEventListener("click", function(){
   // 	sendmessage()
   // });
