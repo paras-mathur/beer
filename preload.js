@@ -153,16 +153,16 @@ function showDashboard() {
 	var autocomplete = new SelectPure(".to", {
         options: [
           {
-            label: "Barbina",
-            value: "ba",
+            label: "Me",
+            value: "Me",
           },
           {
-            label: "Busiate",
-            value: "bus",
+            label: "Test Me",
+            value: "Test Me",
           },
           {
-            label: "Capellini",
-            value: "cp",
+            label: "Notes",
+            value: "Notes",
           },
           {
             label: "Fedelini",
@@ -177,11 +177,11 @@ function showDashboard() {
             value: "sp",
           },
         ],
-        value: ["sp"],
+        value: ["Me"],
         multiple: true,
         autocomplete: true,
-				icon: "fa fa-times",
-        onChange: value => { console.log(value); },
+				icon: "fa fa-times", 
+        onChange: value => { console.log(value); window.customerList = value; },
       });
   // document.getElementById('send').addEventListener("click", function(){
   // 	sendmessage()
