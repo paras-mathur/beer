@@ -58,10 +58,15 @@ function sendmessage(e,t){return new Promise((n,o)=>{var s="[title='"+e+"']",l=d
   }
   
   
-  function toggleView() {
+  function toggleView(that) {
     if (document.getElementsByClassName("wrapper")[0].style.display == "none") {
       document.getElementsByClassName("wrapper")[0].style.display = "";
     } else {
       document.getElementsByClassName("wrapper")[0].style.display = "none"
+    }
+    if (that.classList.contains('clicked')) {
+      that.classList.remove('clicked');
+    } else {
+      that.classList.add('clicked');
     }
   }
