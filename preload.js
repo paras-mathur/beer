@@ -1,4 +1,5 @@
 jQuery = window.$;
+//const csv2json = require('./node_modules/csvjson-csv2json/csv2json.js');
 
 setTimeout(function () {
   start();
@@ -24,6 +25,23 @@ function sayLoggedIn() {
   showDashboard();
 }
 
+function csvJSON(csv){
+  console.log(csv)
+  var lines=csv.split("\n");
+  var result = [];
+  var headers=lines[0].split(",");
+  for(var i=1;i<lines.length;i++){
+    var obj = {};
+    var currentline=lines[i].split(",");
+    for(var j=0;j<headers.length;j++){
+      obj[headers[j]] = currentline[j];
+    }
+    result.push(obj);
+  }
+  return result; //JavaScript object
+  //return JSON.stringify(result); //JSON
+}
+
 function showDashboard() {
 
   body = document.getElementsByTagName('body');
@@ -41,19 +59,19 @@ function showDashboard() {
 	<div class="wrapper">
 
 	<div class="container">
-	  <h1>WhatPush</h1>
+	  <h1>WhatsPush</h1>
 
 	  <div class="form-group">
-			<label for="to">Select the senders</label>
 			<div class="form-check form-check-inline">
 					<input class="form-check-input" type="radio" name="toRadioOptions" id="to-1" value="toCL">
 					<label class="form-check-label" for="to-1" style="font-weight: 100;">Custom List</label>
 					<span style="margin-left:10px;"></span>
 					<input class="form-check-input" type="radio" name="toRadioOptions" id="to-2" value="toGroup">
 					<label class="form-check-label" for="to-2" style="font-weight: 100;">Group</label>
+          <span style="margin-right:25px;"></span>
+          <button type="button" class="bulk-upload-btn btn btn-info btn-sm">+ Bulk Upload</button>
 			</div>
-      <div class="copyable-text taggify to selectable-text" id='to'></div>
-      <select id="multiple" multiple>
+      <select class="copyable-text taggify toContacts selectable-text" id="toContacts" multiple>
       </select>
 			<div style="margin-top:10px;"></div>
 			
@@ -61,20 +79,22 @@ function showDashboard() {
 	  	<textarea class="form-control copyable-text selectable-text" rows="5" id="message"></textarea>
 	  </div>
 
-	  <button type="button" class="btn btn-primary" onclick="sendMessageAll()">Send</button>
+	  <button type="button" class="tingle-btn tingle-btn--default" onclick="sendMessageAll()">Send</button>
 	  
-	</div>
-	
-	`
+	</div>`
+
   body[0].insertAdjacentHTML('beforeend', headerCode);
+
   new SlimSelect({
-    select: '#multiple',
+    select: '#toContacts',
     placeholder: 'Select Contact',
     data: [
-      {text: 'contact 1'},
-      {text: 'contact 2'},
-      {text: 'contact 3'},
-      {text: 'hacker 1'},
+      {text: 'Me'},
+      {text: 'Test Contact'},
+      {text: 'Jack Sparrow'},
+      {text: 'John Sena'},
+      {text: 'Namo'},
+      {text: 'Raga'}
     ],
     addable: function (value) {      
       if (value === 'bad') {return false}
@@ -87,6 +107,46 @@ function showDashboard() {
     onChange: (info) => {
       window.customerList = info
     }
-  }) 
+  })
+
+  // instanciate new modal
+var bulkUploadModal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'button', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2'],
+    onOpen: function() {
+        console.log('modal open');
+    },
+    onClose: function() {
+        console.log('modal closed');
+    },
+    beforeClose: function() {
+        // before cloase callback
+        return true; // close the modal
+    }
+  });
+  // set content
+  bulkUploadModal.setContent(`<label>Paste your CSV here</label>
+  <pre class="code">
+      <span class="token comment">
+      // On pasting, follow this format!(without spaces)</span>
+      <span class="token variable">name,number</span>
+      Jack Sparrow,9987654321
+      John Sena,118776655432
+  </pre>
+  <textarea id="csvCon" class="form-control input save" rows="18" spellcheck="false" data-gramm="true" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 20px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">`);
+  bulkUploadModal.addFooterBtn('Upload', 'tingle-btn tingle-btn--primary tingle-btn--pull-right', function() {
+    var csvText = document.getElementById('csvCon').value
+    
+    var json = csvJSON(csvText);
+    console.log(json);
+    bulkUploadModal.close();
+  });
+  
+  document.querySelector('.bulk-upload-btn').addEventListener("click",function(e){    
+    bulkUploadModal.open()
+  })
 
 }
