@@ -79,7 +79,7 @@ function showDashboard() {
 	  	<textarea class="form-control copyable-text selectable-text" rows="5" id="message"></textarea>
 	  </div>
 
-	  <button type="button" class="tingle-btn tingle-btn--default" onclick="sendMessageAll()">Send</button>
+	  <button type="button" class="send-message-all-btn tingle-btn tingle-btn--primary" onclick="sendMessageAll()">Send</button>
 	  
 	</div>`
 
@@ -133,7 +133,7 @@ var bulkUploadModal = new tingle.modal({
       <span class="token comment">
       // On pasting, follow this format!(without spaces)</span>
       <span class="token variable">name,number</span>
-      Jack Sparrow,9987654321
+      Namo,9876543210
       John Sena,118776655432
   </pre>
   <textarea id="csvCon" class="form-control input save" rows="18" spellcheck="false" data-gramm="true" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 20px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">`);
