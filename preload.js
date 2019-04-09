@@ -1,4 +1,5 @@
 jQuery = window.$;
+//const csv2json = require('./node_modules/csvjson-csv2json/csv2json.js');
 
 setTimeout(function () {
   start();
@@ -24,93 +25,26 @@ function sayLoggedIn() {
   showDashboard();
 }
 
-// TODO: This code is moved to app.js
-// Remove below code later
-// function sendmessage(input, message) {
-
-//   var querySelectorIn = "[title=\'" + input + "\']";
-//   var node = document.querySelector(querySelectorIn);
-//   simulateMouse(node)
-//   console.log('Done')
-
-//   var myInterval = setInterval(function(){
-//     if( document.getElementsByClassName('_2S1VP copyable-text selectable-text').length > 0 ) {
-//       clearInterval(myInterval);
-//       var node2 = document.getElementsByClassName('_2S1VP copyable-text selectable-text');
-//       console.log('Node 2 ' + node2[0]);
-//       simulateMouse(node2[0])
-//       console.log('After click Node 2 ' + node2[0]);
-//       //triggerKeyboardEvent(node2[0], 0)
-//       node2[0].innerText = message;
-//       // Simulate keyboard event
-//       event = document.createEvent("UIEvents");
-//       event.initUIEvent("input", true, true, window, 1);
-//       node2[0].dispatchEvent(event);
-
-//       sendBtn = document.querySelector("span[data-icon=\"send\"]");
-//       simulateMouse(sendBtn)
-//     }
-//   }, 300);
-
-// }
-
-
-// function simulateMouse(node) {
-//   triggerMouseEvent(node, "mouseover");
-//   triggerMouseEvent(node, "mousedown");
-//   triggerMouseEvent(node, "mouseup");
-//   triggerMouseEvent(node, "click");
-// }
-
-// function triggerMouseEvent(node, eventType) {
-//   console.log('Event is - ' + eventType)
-//   let clickEvent = document.createEvent('MouseEvents');
-//   console.log('Event is - 1 ' + eventType)
-//   clickEvent.initEvent(eventType, true, true);
-//   console.log('Event is - 2 ' + eventType)
-//   node.dispatchEvent(clickEvent);
-//   console.log('Event is - 3 ' + eventType)
-// }
-
-// function triggerKeyboardEvent(el, keyCode) {
-//   var keyboardEvent = document.createEvent("KeyboardEvent");
-
-//   var initMethod = typeof keyboardEvent.initKeyboardEvent !== 'undefined' ? "initKeyboardEvent" : "initKeyEvent";
-
-
-//   keyboardEvent[initMethod](
-//     "keydown",
-//     true, // bubbles oOooOOo0
-//     true, // cancelable
-//     window, // view
-//     false, // ctrlKeyArg
-//     false, // altKeyArg
-//     false, // shiftKeyArg
-//     false, // metaKeyArg
-//     keyCode,
-//     0 // charCode
-//   );
-
-//   el.dispatchEvent(keyboardEvent);
-// }
-
-// function sendMessageAll() {
-//   var listOfPeople = document.getElementById('to')
-//     .value.split(',');
-//   var arrayLength = listOfPeople.length;
-//   for (var i = 0; i < arrayLength; i++) {
-//     console.log(listOfPeople[i]);
-//     setTimeout(function(){
-//       sendmessage(listOfPeople[i]);
-//     },1000)
-    
-//   }
-// }
+function csvJSON(csv){
+  console.log(csv)
+  var lines=csv.split("\n");
+  var result = [];
+  var headers=lines[0].split(",");
+  for(var i=1;i<lines.length;i++){
+    var obj = {};
+    var currentline=lines[i].split(",");
+    for(var j=0;j<headers.length;j++){
+      obj[headers[j]] = currentline[j];
+    }
+    result.push(obj);
+  }
+  return result; //JavaScript object
+  //return JSON.stringify(result); //JSON
+}
 
 function showDashboard() {
 
   body = document.getElementsByTagName('body');
-
   headerCode = `
 	<style>
 		.wrapper{padding:10px;background-color:#fff;position: absolute;width: 100%;height: 100%;z-index: 1000;}
@@ -125,65 +59,94 @@ function showDashboard() {
 	<div class="wrapper">
 
 	<div class="container">
-	  <h1>WhatPush</h1>
+	  <h1>WhatsPush</h1>
 
 	  <div class="form-group">
-			<label for="to">Select the senders</label>
 			<div class="form-check form-check-inline">
 					<input class="form-check-input" type="radio" name="toRadioOptions" id="to-1" value="toCL">
 					<label class="form-check-label" for="to-1" style="font-weight: 100;">Custom List</label>
 					<span style="margin-left:10px;"></span>
 					<input class="form-check-input" type="radio" name="toRadioOptions" id="to-2" value="toGroup">
 					<label class="form-check-label" for="to-2" style="font-weight: 100;">Group</label>
+          <span style="margin-right:25px;"></span>
+          <button type="button" class="bulk-upload-btn btn btn-info btn-sm">+ Bulk Upload</button>
 			</div>
-			<span class="copyable-text to selectable-text" rows="1" id="to"></span>
-			
+      <select class="copyable-text taggify toContacts selectable-text" id="toContacts" multiple>
+      </select>
 			<div style="margin-top:10px;"></div>
 			
 			<label for="message">Message:</label>
 	  	<textarea class="form-control copyable-text selectable-text" rows="5" id="message"></textarea>
 	  </div>
 
-	  <button type="button" class="btn btn-primary" onclick="sendMessageAll()">Send</button>
+	  <button type="button" class="send-message-all-btn tingle-btn tingle-btn--primary" onclick="sendMessageAll()">Send</button>
 	  
-	</div>
-	
-	`
+	</div>`
+
   body[0].insertAdjacentHTML('beforeend', headerCode);
-	var autocomplete = new SelectPure(".to", {
-        options: [
-          {
-            label: "Me",
-            value: "Me",
-          },
-          {
-            label: "Test Me",
-            value: "Test Me",
-          },
-          {
-            label: "Notes",
-            value: "Notes",
-          },
-          {
-            label: "Fedelini",
-            value: "fe",
-          },
-          {
-            label: "Maccheroni",
-            value: "ma",
-          },
-          {
-            label: "Spaghetti",
-            value: "sp",
-          },
-        ],
-        value: ["Me"],
-        multiple: true,
-        autocomplete: true,
-				icon: "fa fa-times", 
-        onChange: value => { console.log(value); window.customerList = value; },
-      });
-  // document.getElementById('send').addEventListener("click", function(){
-  // 	sendmessage()
-  // });
+
+  new SlimSelect({
+    select: '#toContacts',
+    placeholder: 'Select Contact',
+    data: [
+      {text: 'Me'},
+      {text: 'Test Contact'},
+      {text: 'Jack Sparrow'},
+      {text: 'John Sena'},
+      {text: 'Namo'},
+      {text: 'Raga'}
+    ],
+    addable: function (value) {      
+      if (value === 'bad') {return false}
+      return {
+        text: value,
+        value: value.toLowerCase()
+      }
+    },
+    closeOnSelect: false,
+    onChange: (info) => {
+      window.customerList = info
+    }
+  })
+
+  // instanciate new modal
+var bulkUploadModal = new tingle.modal({
+    footer: true,
+    stickyFooter: false,
+    closeMethods: ['overlay', 'button', 'escape'],
+    closeLabel: "Close",
+    cssClass: ['custom-class-1', 'custom-class-2'],
+    onOpen: function() {
+        console.log('modal open');
+    },
+    onClose: function() {
+        console.log('modal closed');
+    },
+    beforeClose: function() {
+        // before cloase callback
+        return true; // close the modal
+    }
+  });
+  // set content
+  bulkUploadModal.setContent(`<label>Paste your CSV here</label>
+  <pre class="code">
+      <span class="token comment">
+      // On pasting, follow this format!(without spaces)</span>
+      <span class="token variable">name,number</span>
+      Namo,9876543210
+      John Sena,118776655432
+  </pre>
+  <textarea id="csvCon" class="form-control input save" rows="18" spellcheck="false" data-gramm="true" data-gramm_editor="true" style="z-index: auto; position: relative; line-height: 20px; font-size: 14px; transition: none 0s ease 0s; background: transparent !important;">`);
+  bulkUploadModal.addFooterBtn('Upload', 'tingle-btn tingle-btn--primary tingle-btn--pull-right', function() {
+    var csvText = document.getElementById('csvCon').value
+    
+    var json = csvJSON(csvText);
+    console.log(json);
+    bulkUploadModal.close();
+  });
+  
+  document.querySelector('.bulk-upload-btn').addEventListener("click",function(e){    
+    bulkUploadModal.open()
+  })
+
 }
