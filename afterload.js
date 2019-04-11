@@ -44,6 +44,4 @@ function sendmessage(e,t){return new Promise((n,o)=>{var s="[title='"+e+"']",l=d
       that.classList.add('clicked');
     }
   }
-   
-    
-  
+ 
